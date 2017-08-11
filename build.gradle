@@ -1,0 +1,43 @@
+buildscript {
+    ext {
+        springBootVersion = '1.5.6.RELEASE'
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter'
+    compile 'org.springframework.boot:spring-boot-starter-actuator'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile 'org.springframework.boot:spring-boot-devtools' // needed to enable h2 console (debug use only)
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'com.h2database:h2'
+    compile 'org.liquibase:liquibase-core'
+    compile 'org.liquibase:liquibase-groovy-dsl:1.2.2'
+
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+}
+
+bootRun {
+    systemProperties = System.properties
+}
+
+springBoot {
+    executable = true
+}
