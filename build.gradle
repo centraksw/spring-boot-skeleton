@@ -5,39 +5,49 @@ buildscript {
 
     repositories {
         mavenCentral()
+
+        // needed by asciidoctor plugin
+        maven { url "https://plugins.gradle.org/m2/" }
     }
 
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "org.asciidoctor:asciidoctor-gradle-plugin:1.5.3"
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
+apply from: "${rootDir}/gradle/restdocs.gradle"
 
 sourceCompatibility = 1.8
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
-    compile 'org.springframework.boot:spring-boot-starter'
-    compile 'org.springframework.boot:spring-boot-starter-actuator'
-    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile 'org.springframework.boot:spring-boot-starter' // always needed for spring boot
+    compile 'org.springframework.boot:spring-boot-starter-actuator' // adds some nice to haves, like the /health endpoint
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa' // adds jpa capability for db crud operations
     compile 'org.springframework.boot:spring-boot-devtools' // needed to enable h2 console (debug use only)
-    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-web' // adds tomcat
+
+    // needed to use h2 database. If using mysql, swap this out with compile("mysql:mysql-connector-java:5.1.40")
     compile 'com.h2database:h2'
+
+    // needed for liquibase
     compile 'org.liquibase:liquibase-core'
-    compile 'org.liquibase:liquibase-groovy-dsl:1.2.2'
+    compile 'org.liquibase:liquibase-groovy-dsl:1.2.2' // needed if we want to use groovy instead of xml for liquibase
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
+
+    // For some reason IDE runs fail due to a ClassNotFoundException without this dependency declared
+    // Googling indicates that tomcat embedded includes APIs that fulfill this class definition
+    // java.lang.ClassNotFoundException: com.sun.el.ExpressionFactoryImpl
+    testRuntime group: 'org.glassfish.web', name: 'el-impl', version: '2.2'
 }
 
 bootRun {
-    systemProperties = System.properties
+    systemProperties = System.properties // allows passing in spring profiles
 }
 
 springBoot {
-    executable = true
+    executable = true // allows the jar to be executable
 }

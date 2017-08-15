@@ -3,3 +3,4 @@
 !gradle/wrapper/gradle-wrapper.jar
 .idea
 data
+/out/
