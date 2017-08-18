@@ -30,11 +30,11 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web' // adds tomcat
 
     // needed to use h2 database. If using mysql, swap this out with compile("mysql:mysql-connector-java:5.1.40")
-    compile 'com.h2database:h2'
+    runtime 'com.h2database:h2'
 
     // needed for liquibase
-    compile 'org.liquibase:liquibase-core'
-    compile 'org.liquibase:liquibase-groovy-dsl:1.2.2' // needed if we want to use groovy instead of xml for liquibase
+    runtime 'org.liquibase:liquibase-core'
+    runtime 'org.liquibase:liquibase-groovy-dsl:1.2.2' // needed if we want to use groovy instead of xml for liquibase
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
 
