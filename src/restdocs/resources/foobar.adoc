@@ -6,7 +6,7 @@
 :toclevels: 4
 :sectlinks:
 
-include::{snippets}/foobar-rest-docs/get-all/section.adoc[]
-include::{snippets}/foobar-rest-docs/get-one/section.adoc[]
-include::{snippets}/foobar-rest-docs/create/section.adoc[]
-include::{snippets}/foobar-rest-docs/delete/section.adoc[]
+include::{snippets}/foobar-rest-docs/get-all/auto-section.adoc[]
+include::{snippets}/foobar-rest-docs/get-one/auto-section.adoc[]
+include::{snippets}/foobar-rest-docs/create/auto-section.adoc[]
+include::{snippets}/foobar-rest-docs/delete/auto-section.adoc[]

@@ -20,10 +20,6 @@ configurations {
     jsondoclet
 }
 
-repositories {
-    maven { url "https://plugins.gradle.org/m2/" }
-}
-
 dependencies {
 
     // For restDocs configuration to make use of dependencies properly, need to add compile/runtime dependencies
@@ -34,15 +30,14 @@ dependencies {
     restdocsRuntime configurations.runtime
     restdocsRuntime configurations.testRuntime
 
-    testCompile 'org.springframework.restdocs:spring-restdocs-mockmvc:1.1.0.RELEASE'
-    testCompile 'org.springframework.restdocs:spring-restdocs-core:1.1.0.RELEASE'
+    testCompile 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    testCompile 'org.springframework.restdocs:spring-restdocs-core'
 
     // Only needed if restdocs sources are used across projects (e.g. awp-spring-boot-common could have commonly
     // used classes that are needed in dependent projects
     //restdocsOutput sourceSets.restdocs.output
-
-    testCompile group: 'capital.scalable', name: 'spring-auto-restdocs-core', version: '1.0.8'
-    jsondoclet group: 'capital.scalable', name: 'spring-auto-restdocs-json-doclet', version: '1.0.8'
+    testCompile 'capital.scalable:spring-auto-restdocs-core'
+    jsondoclet 'capital.scalable:spring-auto-restdocs-json-doclet'
 }
 
 // Bundle in the spring boot jar
@@ -73,7 +68,7 @@ task restdocs(type: Test) {
 
     maxHeapSize = '1024m'
 
-    testClassesDir = sourceSets.restdocs.output.classesDir
+    testClassesDirs = sourceSets.restdocs.output
     classpath = sourceSets.restdocs.runtimeClasspath
 
     mustRunAfter tasks.test

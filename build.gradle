@@ -1,29 +1,51 @@
 buildscript {
     ext {
-        springBootVersion = '1.5.6.RELEASE'
+        springBootVersion = "1.5.9.RELEASE"
     }
-
     repositories {
-        mavenCentral()
-
-        // needed by asciidoctor plugin
-        maven { url "https://plugins.gradle.org/m2/" }
+        jcenter()
     }
-
     dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
-        classpath "org.asciidoctor:asciidoctor-gradle-plugin:1.5.3"
+        classpath "org.asciidoctor:asciidoctor-gradle-plugin:1.5.6"
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
+        classpath "io.spring.gradle:dependency-management-plugin:1.0.3.RELEASE"
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
-apply from: "${rootDir}/gradle/restdocs.gradle"
+apply plugin: "io.spring.dependency-management"
 
 sourceCompatibility = 1.8
 
+repositories {
+    jcenter()
+}
+
+dependencyManagement {
+    /**
+     * uses curated versions of various libraries selected by spring boot, since all production apps in this repo
+     * uses spring boot, it makes sense to use versions that are known to work together rather than specify our
+     * own versions. Before adding our own versions of any library, first check to see if one has already been
+     * selected by spring boot's POM by visiting (replace $springBootVersion):
+     * https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-parent/$springBootVersion
+     *
+     * And think twice before overriding it as it may conflict with other parts of spring boot
+     */
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-starter-parent:$springBootVersion"
+    }
+
+    dependencies {
+        dependencySet(group: 'capital.scalable', version: '1.0.10') {
+            entry 'spring-auto-restdocs-docs'
+            entry 'spring-auto-restdocs-json-doclet'
+            entry 'spring-auto-restdocs-core'
+        }
+    }
+}
+
 dependencies {
-    compile 'org.springframework.boot:spring-boot-starter' // always needed for spring boot
     compile 'org.springframework.boot:spring-boot-starter-actuator' // adds some nice to haves, like the /health endpoint
     compile 'org.springframework.boot:spring-boot-starter-data-jpa' // adds jpa capability for db crud operations
     compile 'org.springframework.boot:spring-boot-devtools' // needed to enable h2 console (debug use only)
@@ -37,11 +59,6 @@ dependencies {
     runtime 'org.liquibase:liquibase-groovy-dsl:1.2.2' // needed if we want to use groovy instead of xml for liquibase
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
-
-    // For some reason IDE runs fail due to a ClassNotFoundException without this dependency declared
-    // Googling indicates that tomcat embedded includes APIs that fulfill this class definition
-    // java.lang.ClassNotFoundException: com.sun.el.ExpressionFactoryImpl
-    testRuntime group: 'org.glassfish.web', name: 'el-impl', version: '2.2'
 }
 
 bootRun {
@@ -51,3 +68,5 @@ bootRun {
 springBoot {
     executable = true // allows the jar to be executable
 }
+
+apply from: "${rootDir}/gradle/restdocs.gradle"
