@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.hamcrest.Matchers;
 import org.mockito.ArgumentMatcher;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.MediaType;
@@ -83,7 +84,7 @@ public class FoobarControllerTestShared {
         foobarAfter.setId(1);
         foobarAfter.setValue(999);
 
-        Mockito.when(foobarService.save(org.mockito.Matchers.argThat(new FooBarMatcher(foobarBefore.getId(),
+        Mockito.when(foobarService.save(ArgumentMatchers.argThat(new FooBarMatcher(foobarBefore.getId(),
                 foobarBefore.getValue())))).thenReturn(foobarAfter);
 
         // confirm 200 is returned with the Foobar that we expect
@@ -99,7 +100,8 @@ public class FoobarControllerTestShared {
         foobarUpdate.setId(1);
         foobarUpdate.setValue(1000);
 
-        Mockito.when(foobarService.save(org.mockito.Matchers.argThat(new FooBarMatcher(foobarUpdate.getId(),
+        Mockito.reset(foobarService);
+        Mockito.when(foobarService.save(ArgumentMatchers.argThat(new FooBarMatcher(foobarUpdate.getId(),
                 foobarUpdate.getValue())))).thenReturn(foobarUpdate);
 
         // confirm 200 is returned with the Foobar that we expect
@@ -132,7 +134,7 @@ public class FoobarControllerTestShared {
     /**
      * Helper class for Mockito matching of FooBar objects
      */
-    private class FooBarMatcher extends ArgumentMatcher<Foobar> {
+    private class FooBarMatcher implements ArgumentMatcher<Foobar> {
         final int id;
         final int value;
 
@@ -142,9 +144,7 @@ public class FoobarControllerTestShared {
         }
 
         @Override
-        public boolean matches(Object argument) {
-            if (argument == null) return false;
-            Foobar foobar = (Foobar) argument;
+        public boolean matches(Foobar foobar) {
             return (foobar.getId() == id) && (foobar.getValue() == value);
         }
     }

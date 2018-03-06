@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,7 +34,7 @@ public class FoobarServiceTest {
         foobar.setId(1);
         foobar.setValue(999);
 
-        Mockito.when(foobarRepository.findOne(1)).thenReturn(foobar);
+        Mockito.when(foobarRepository.getOne(1)).thenReturn(foobar);
         Assert.assertEquals(foobar, foobarService.get(1));
     }
 
@@ -72,6 +72,6 @@ public class FoobarServiceTest {
     @Test
     public void delete() {
         foobarService.delete(1);
-        Mockito.verify(foobarRepository, Mockito.times(1)).delete(1);
+        Mockito.verify(foobarRepository, Mockito.times(1)).deleteById(1);
     }
 }
