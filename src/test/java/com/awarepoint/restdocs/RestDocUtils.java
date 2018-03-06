@@ -1,4 +1,4 @@
-package com.awarepoint;
+package com.awarepoint.restdocs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

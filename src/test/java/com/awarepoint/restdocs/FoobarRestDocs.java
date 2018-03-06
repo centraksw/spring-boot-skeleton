@@ -1,4 +1,4 @@
-package com.awarepoint;
+package com.awarepoint.restdocs;
 
 import com.awarepoint.service.FoobarService;
 import com.awarepoint.web.FoobarControllerTestShared;
@@ -28,8 +28,6 @@ public class FoobarRestDocs {
     public JUnitRestDocumentation restDocumentation =
             new JUnitRestDocumentation(System.getProperties().getProperty("org.springframework.restdocs.outputDir"));
 
-    private MockMvc mvc;
-
     @Autowired
     private WebApplicationContext context;
 
@@ -40,7 +38,7 @@ public class FoobarRestDocs {
 
     @Before
     public void setUp() {
-        mvc = RestDocUtils.createMockMvc(restDocumentation, context, new ObjectMapper());
+        MockMvc mvc = RestDocUtils.createMockMvc(restDocumentation, context, new ObjectMapper());
         foobarControllerTestShared = new FoobarControllerTestShared(mvc, foobarService);
     }
 

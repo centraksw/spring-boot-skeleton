@@ -19,7 +19,7 @@ public class DefaultFoobarService implements FoobarService{
     }
 
     public Foobar get(int id) {
-        return foobarRepository.findOne(id);
+        return foobarRepository.getOne(id);
     }
 
     public List<Foobar> getAll() {
@@ -31,6 +31,6 @@ public class DefaultFoobarService implements FoobarService{
     }
 
     public void delete(int id) {
-        foobarRepository.delete(id);
+        foobarRepository.deleteById(id);
     }
 }

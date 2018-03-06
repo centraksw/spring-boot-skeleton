@@ -19,8 +19,11 @@ import java.util.List;
 @RestController
 public class FoobarController {
 
-    @Autowired
-    private FoobarService foobarService;
+    private final FoobarService foobarService;
+
+    public FoobarController(FoobarService foobarService) {
+        this.foobarService = foobarService;
+    }
 
     /**
      * Gets all foobars
