@@ -69,12 +69,12 @@ springBoot {
     executable = true // allows the jar to be executable
 }
 
-jar {
-    if (project.hasProperty('ver')) {
-        version = project.ver
-    } else {
-        version = '0.0.1-SNAPSHOT'
-    }
-}
+//jar {
+//    if (project.hasProperty('ver')) {
+//        version = project.ver
+//    } else {
+//        version = '0.0.1-SNAPSHOT'
+//    }
+//}
 
 apply from: "${rootDir}/gradle/restdocs.gradle"
